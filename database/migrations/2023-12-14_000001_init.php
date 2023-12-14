@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('users');
-
         Schema::create('planets', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
@@ -50,19 +48,19 @@ return new class extends Migration
 
         Schema::create('planets_to_people', function (Blueprint $table) {
             $table->unsignedBigInteger('planet_id');
-            $table->unsignedBigInteger('people_id');
+            $table->unsignedBigInteger('person_id');
 
             $table->foreign('planet_id')
                 ->references('id')
                 ->on('planets')
                 ->onDelete('restrict');
 
-            $table->foreign('people_id')
+            $table->foreign('person_id')
                 ->references('id')
                 ->on('people')
                 ->onDelete('restrict');
 
-            $table->primary(['planet_id', 'people_id']);
+            $table->primary(['planet_id', 'person_id']);
         });
     }
 
