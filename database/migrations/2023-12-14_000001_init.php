@@ -45,23 +45,6 @@ return new class extends Migration
                 ->on('planets')
                 ->onDelete('restrict');
         });
-
-        Schema::create('planets_to_people', function (Blueprint $table) {
-            $table->unsignedBigInteger('planet_id');
-            $table->unsignedBigInteger('person_id');
-
-            $table->foreign('planet_id')
-                ->references('id')
-                ->on('planets')
-                ->onDelete('restrict');
-
-            $table->foreign('person_id')
-                ->references('id')
-                ->on('people')
-                ->onDelete('restrict');
-
-            $table->primary(['planet_id', 'person_id']);
-        });
     }
 
     /**
@@ -69,7 +52,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('planets_to_people');
         Schema::dropIfExists('people');
         Schema::dropIfExists('planets');
     }

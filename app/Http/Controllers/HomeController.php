@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\PersonService;
 use App\Services\PlanetService;
-use App\Services\PlanetToPersonService;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -14,8 +13,7 @@ class HomeController extends Controller
      */
     public function __construct(
         private readonly PlanetService $planetService,
-        private readonly PersonService $personService,
-        private readonly PlanetToPersonService $planetToPersonService
+        private readonly PersonService $personService
     )
     {
     }
@@ -56,12 +54,6 @@ class HomeController extends Controller
         $person->save();*/
 
         $person = $this->personService->fetchById(1);
-
-        /*$this->planetToPersonService
-            ->create()
-            ->setPlanet($planet)
-            ->setPerson($person)
-            ->save();*/
 
         dump($person);
         dump($person->getHomeworld()->getName());
