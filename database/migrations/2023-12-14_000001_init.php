@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('planets', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('rotation_period');
-            $table->integer('orbital_period');
-            $table->integer('diameter');
-            $table->string('climate');
-            $table->string('gravity');
-            $table->string('terrain');
-            $table->integer('surface_water');
-            $table->integer('population');
+            $table->integer('rotation_period')->nullable();
+            $table->integer('orbital_period')->nullable();
+            $table->integer('diameter')->nullable();
+            $table->string('climate')->nullable();
+            $table->string('gravity')->nullable();
+            $table->string('terrain')->nullable();
+            $table->integer('surface_water')->nullable();
+            $table->unsignedBigInteger('population')->nullable();
             $table->date('created_at');
             $table->date('edited_at');
         });

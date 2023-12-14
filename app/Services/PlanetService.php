@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Planet;
 
-class PlanetService
+final class PlanetService
 {
     /**
      * Fetches a planet by its ID.
@@ -15,5 +15,16 @@ class PlanetService
     public function fetchById(int $id): ?Planet
     {
         return Planet::find($id);
+    }
+
+    /**
+     * Insert multiple planets into the database.
+     *
+     * @param array $planets An array of Planet objects to insert into the database.
+     * @return void
+     */
+    public function insertAll(array $planets): void
+    {
+        Planet::insert($planets);
     }
 }

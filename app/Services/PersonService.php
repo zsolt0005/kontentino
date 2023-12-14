@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Person;
 
-class PersonService
+final class PersonService
 {
     /**
      * Fetches a person by their ID.
