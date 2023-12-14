@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Person;
-use App\Models\Planet;
 use App\Services\PersonService;
 use App\Services\PlanetService;
 use App\Services\PlanetToPersonService;
@@ -57,14 +55,13 @@ class HomeController extends Controller
 
         $person->save();*/
 
-        /** @var Person $person */
         $person = $this->personService->fetchById(1);
 
-        $this->planetToPersonService
+        /*$this->planetToPersonService
             ->create()
             ->setPlanet($planet)
             ->setPerson($person)
-            ->save();
+            ->save();*/
 
         dump($person);
         dump($person->getHomeworld()->getName());
