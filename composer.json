@@ -48,7 +48,9 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "larastan": "vendor/bin/phpstan analyse -c tests/PhpStan/phpstan.neon"
+
+        "larastan": "vendor/bin/phpstan analyse -c tests/PhpStan/phpstan.neon",
+        "phpunit": "vendor/bin/phpunit tests/Unit"
     },
     "extra": {
         "laravel": {
