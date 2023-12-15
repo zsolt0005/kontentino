@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Data\PeopleResponseData;
+use App\Data\PlanetsResponseData;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Spatie\DataTransferObject\DataTransferObject;
 
 /**
  * This class provides methods to fetch Star Wars API (SWAPI) data.
@@ -24,34 +27,37 @@ final class SwapiService
      * Fetch residents by page number.
      *
      * @param int $page The page number to fetch residents from.
-     * @return array<string, mixed> The array of residents fetched. For the schema see {@see https://swapi.py4e.com/documentation#people}.
+     * @return PeopleResponseData
      * @throws GuzzleException If an error occurs while making the HTTP request.
      */
-    public function fetchPeopleByPage(int $page): array
+    public function fetchPeopleByPage(int $page): PeopleResponseData
     {
-        return $this->fetchData(self::PEOPLE_URL . '?page=' . $page);
+        return $this->fetchData(self::PEOPLE_URL . '?page=' . $page, PeopleResponseData::class);
     }
 
     /**
      * Fetch planets by page number.
      *
      * @param int $page The page number to fetch planets from.
-     * @return array<string, mixed> The array of planets fetched. For the schema see {@see https://swapi.py4e.com/documentation#planets}.
+     * @return PlanetsResponseData
      * @throws GuzzleException If an error occurs while making the HTTP request.
      */
-    public function fetchPlanetsByPage(int $page): array
+    public function fetchPlanetsByPage(int $page): PlanetsResponseData
     {
-        return $this->fetchData(self::PLANETS_URL . '?page=' . $page);
+        return $this->fetchData(self::PLANETS_URL . '?page=' . $page, PlanetsResponseData::class);
     }
 
     /**
      * Fetch data from the provided URL.
      *
+     * @template T of DataTransferObject
+     *
      * @param string $url The URL to fetch data from.
-     * @return array<mixed> The parsed array of data fetched from the URL.
+     * @param class-string<T> $dtoClass
+     * @return T The parsed array of data fetched from the URL.
      * @throws GuzzleException If an error occurs while making the HTTP request.
      */
-    private function fetchData(string $url): array
+    private function fetchData(string $url, string $dtoClass): DataTransferObject
     {
         $client = new Client();
 
@@ -61,6 +67,6 @@ final class SwapiService
         /** @var array<mixed> $parsedBody */
         $parsedBody = json_decode($body->getContents(), true);
 
-        return $parsedBody;
+        return new $dtoClass($parsedBody);
     }
 }

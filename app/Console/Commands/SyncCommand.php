@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Data\PersonData;
+use App\Data\PlanetData;
 use App\Models\Person;
 use App\Models\Planet;
 use App\Services\PersonService;
@@ -78,16 +80,16 @@ final class SyncCommand extends Command
                 return;
             }
 
-            if(!isset($planets['results']))
+            if(!isset($planets->results))
             {
                 $this->error('Missing results field in the response.');
                 return;
             }
 
-            $planetsToInsert = array_map(fn(array $planet) => $this->mapPlanetResponse($planet), $planets['results']);
+            $planetsToInsert = array_map(fn(PlanetData $planet) => $this->mapPlanetResponse($planet), $planets->results);
             $this->planetService->insertAll($planetsToInsert);
 
-            if($planets['next'] !== null)
+            if($planets->next !== null)
             {
                 $page++;
             }
@@ -118,16 +120,16 @@ final class SyncCommand extends Command
                 return;
             }
 
-            if(!isset($people['results']))
+            if(!isset($people->results))
             {
                 $this->error('Missing results field in the response.');
                 return;
             }
 
-            $peopleToInsert = array_map(fn(array $person) => $this->mapPeopleResponse($person), $people['results']);
+            $peopleToInsert = array_map(fn(PersonData $person) => $this->mapPeopleResponse($person), $people->results);
             $this->personService->insertAll($peopleToInsert);
 
-            if($people['next'] !== null)
+            if($people->next !== null)
             {
                 $page++;
             }
@@ -141,50 +143,50 @@ final class SyncCommand extends Command
     /**
      * Maps the planet response array to an array with specific keys.
      *
-     * @param array $planet The planet response array.
+     * @param PlanetData $planet The planet.
      * @return array The mapped planet array with specific keys.
      */
-    private function mapPlanetResponse(array $planet): array
+    private function mapPlanetResponse(PlanetData $planet): array
     {
         return [
-            Planet::NAME             => $planet['name'],
-            Planet::ROTATION_PERIOD  => $this->getNullablePropertyValue($planet['rotation_period']),
-            Planet::ORBITAL_PERIOD   => $this->getNullablePropertyValue($planet['orbital_period']),
-            Planet::DIAMETER         => $this->getNullablePropertyValue($planet['diameter']),
-            Planet::CLIMATE          => $this->getNullablePropertyValue($planet['climate']),
-            Planet::GRAVITY          => $this->getNullablePropertyValue($planet['gravity']),
-            Planet::TERRAIN          => $this->getNullablePropertyValue($planet['terrain']),
-            Planet::SURFACE_WATER    => $this->getNullablePropertyValue($planet['surface_water']),
-            Planet::POPULATION       => $planet['population'] !== 'unknown' ? $planet['population'] : null,
-            Planet::CREATED_AT       => Carbon::parse($planet['created'])->format('Y-m-d H:i:s'),
-            Planet::EDITED_AT        => Carbon::parse($planet['edited'])->format('Y-m-d H:i:s')
+            Planet::NAME             => $planet->name,
+            Planet::ROTATION_PERIOD  => $this->getNullablePropertyValue($planet->rotationPeriod),
+            Planet::ORBITAL_PERIOD   => $this->getNullablePropertyValue($planet->orbitalPeriod),
+            Planet::DIAMETER         => $this->getNullablePropertyValue($planet->diameter),
+            Planet::CLIMATE          => $this->getNullablePropertyValue($planet->climate),
+            Planet::GRAVITY          => $this->getNullablePropertyValue($planet->gravity),
+            Planet::TERRAIN          => $this->getNullablePropertyValue($planet->terrain),
+            Planet::SURFACE_WATER    => $this->getNullablePropertyValue($planet->surfaceWater),
+            Planet::POPULATION       => $this->getNullablePropertyValue($planet->population),
+            Planet::CREATED_AT       => Carbon::parse($planet->createdAt)->format('Y-m-d H:i:s'),
+            Planet::EDITED_AT        => Carbon::parse($planet->editedAt)->format('Y-m-d H:i:s')
         ];
     }
 
     /**
      * Maps the person response array to an array with specific keys.
      *
-     * @param array $person The person response array.
+     * @param PersonData $person The person.
      * @return array The mapped person array with specific keys.
      */
-    private function mapPeopleResponse(array $person): array
+    private function mapPeopleResponse(PersonData $person): array
     {
         // The ids from the source are matching with the imported ones
-        $planetUrlSegments = explode('/', $person['homeworld']);
+        $planetUrlSegments = explode('/', $person->homeWorldUrl);
         $planetId = $planetUrlSegments[count($planetUrlSegments) - 2];
 
         return [
-            Person::NAME         => $person['name'],
-            Person::HEIGHT       => $this->getNullablePropertyValue($person['height']),
-            Person::MASS         => $this->getNullablePropertyValue($this->removeNumberThousandsFormatting($person['mass'])),
-            Person::HAIR_COLOR   => $person['hair_color'],
-            Person::SKIN_COLOR   => $person['skin_color'],
-            Person::EYE_COLOR    => $person['eye_color'],
-            Person::BIRTH_YEAR   => $this->getNullablePropertyValue($person['birth_year']),
-            Person::GENDER       => $this->getNullablePropertyValue($person['gender']),
+            Person::NAME         => $person->name,
+            Person::HEIGHT       => $this->getNullablePropertyValue($person->height),
+            Person::MASS         => $this->getNullablePropertyValue($this->removeNumberThousandsFormatting($person->mass)),
+            Person::HAIR_COLOR   => $this->normalizePropertyValue($person->hairColor),
+            Person::SKIN_COLOR   => $this->normalizePropertyValue($person->skinColor),
+            Person::EYE_COLOR    => $this->normalizePropertyValue($person->eyeColor),
+            Person::BIRTH_YEAR   => $this->getNullablePropertyValue($person->birthYear),
+            Person::GENDER       => $this->normalizePropertyValue($person->gender),
             Person::HOMEWORLD_ID => $planetId,
-            Person::CREATED_AT   => Carbon::parse($person['created'])->format('Y-m-d H:i:s'),
-            Person::EDITED_AT    => Carbon::parse($person['edited'])->format('Y-m-d H:i:s')
+            Person::CREATED_AT   => Carbon::parse($person->createdAt)->format('Y-m-d H:i:s'),
+            Person::EDITED_AT    => Carbon::parse($person->editedAt)->format('Y-m-d H:i:s')
         ];
     }
 
@@ -199,9 +201,21 @@ final class SyncCommand extends Command
      */
     private function getNullablePropertyValue(mixed $value): mixed
     {
-        return ($value !== 'unknown' && $value !== 'n/a' && $value !== '?' && $value !== 'none')
-            ? $value
+        $normalized = $this->normalizePropertyValue($value);
+        return ($normalized !== 'unknown' && $normalized !== 'none')
+            ? $normalized
             : null;
+    }
+
+    /**
+     * Prepares the gender value.
+     *
+     * @param string $value The input gender value.
+     * @return string The prepared gender value.
+     */
+    private function normalizePropertyValue(string $value): string
+    {
+        return ($value !== 'n/a' && $value !== '?') ? $value : 'none';
     }
 
     /**

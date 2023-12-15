@@ -15,5 +15,5 @@ enum Gender: string
     case MALE = 'male';
     case HERMAPHRODITE = 'hermaphrodite';
     case UNKNOWN = 'unknown';
-    case NONE = 'n/a';
+    case NONE = 'none';
 }
