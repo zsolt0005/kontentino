@@ -29,13 +29,13 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('height');
-            $table->integer('mass');
+            $table->integer('height')->nullable();
+            $table->integer('mass')->nullable();
             $table->string('hair_color');
             $table->string('skin_color');
             $table->string('eye_color');
-            $table->string('birth_year');
-            $table->enum('gender', ['m', 'f']);
+            $table->string('birth_year')->nullable();
+            $table->enum('gender', ['male', 'female', 'hermaphrodite'])->nullable();
             $table->unsignedBigInteger('homeworld_id');
             $table->date('created_at');
             $table->date('edited_at');

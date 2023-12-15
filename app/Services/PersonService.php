@@ -16,4 +16,15 @@ final class PersonService
     {
         return Person::find($id);
     }
+
+    /**
+     * Insert multiple people into the database.
+     *
+     * @param array $people An array of People objects to insert into the database.
+     * @return void
+     */
+    public function insertAll(array $people): void
+    {
+        Person::insert($people);
+    }
 }
