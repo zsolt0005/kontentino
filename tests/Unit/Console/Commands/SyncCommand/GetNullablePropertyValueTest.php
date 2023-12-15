@@ -31,7 +31,7 @@ final class GetNullablePropertyValueTest extends TestCase
             'unknown' => ['unknown', null],
             'n/a' => ['n/a', null],
             'none' => ['none', null],
-            '?' => ['?', null],
+            '?' => ['?', null]
         ];
     }
 

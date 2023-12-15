@@ -27,7 +27,7 @@ final class RemoveNumberThousandsFormattingTest extends TestCase
         return [
             'with ,' => ['1,123', '1123'],
             'without ,' => ['123', '123'],
-            'with 2x ,' => ['1,123,123', '1123123'],
+            'with 2x ,' => ['1,123,123', '1123123']
         ];
     }
 
