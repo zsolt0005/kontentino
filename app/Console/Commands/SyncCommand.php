@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Console\Commands;
 
@@ -11,24 +11,27 @@ use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 
+/**
+ * Command for synchronizing the list of all known {@see Planet}s and their {@see Person}s.
+ *
+ * @package App\Console\Commands
+ * @author  Zsolt Döme
+ * @since   2023
+ */
 final class SyncCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    /** @var string The name and signature of the console command. */
     protected $signature = 'app:sync-command';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    /** @var string The console command description. */
     protected $description = 'Sync the list of all known planets and their residents.';
 
     /**
      * Constructor.
+     *
+     * @param SwapiService $swapiService
+     * @param PersonService $personService
+     * @param PlanetService $planetService
      */
     public function __construct(
         private readonly SwapiService $swapiService,
@@ -41,6 +44,8 @@ final class SyncCommand extends Command
 
     /**
      * Execute the console command.
+     *
+     * @return void
      */
     public function handle(): void
     {
@@ -55,6 +60,8 @@ final class SyncCommand extends Command
 
     /**
      * Synchronizes planets by fetching them from the SWAPI service and inserting them into the database.
+     *
+     * @return void
      */
     private function syncPlanets(): void
     {
@@ -93,6 +100,8 @@ final class SyncCommand extends Command
 
     /**
      * Synchronizes people data by fetching them from the SWAPI service and inserting them into the database.
+     *
+     * @return void
      */
     private function syncPeople(): void
     {

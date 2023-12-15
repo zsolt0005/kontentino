@@ -6,19 +6,20 @@
 
         "ext-pdo": "*",
 
-        "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.8"
+        "guzzlehttp/guzzle": "^7.2.0",
+        "laravel/framework": "^10.10.0",
+        "laravel/sanctum": "^3.3.0",
+        "laravel/tinker": "^2.8.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
+        "laravel/pint": "^1.0.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.1",
-        "spatie/laravel-ignition": "^2.0"
+        "nunomaduro/collision": "^7.0.0",
+        "phpunit/phpunit": "^10.1.0",
+        "spatie/laravel-ignition": "^2.0.0",
+        "larastan/larastan": "^2.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -45,7 +46,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "larastan": "vendor/bin/phpstan analyse -c tests/PhpStan/phpstan.neon"
     },
     "extra": {
         "laravel": {

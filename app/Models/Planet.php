@@ -1,11 +1,18 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Planet extends Model
+/**
+ * Represents a planet entity.
+ *
+ * @package App\Models
+ * @author  Zsolt Döme
+ * @since   2023
+ */
+final class Planet extends Model
 {
     use HasFactory;
 
@@ -48,42 +55,42 @@ class Planet extends Model
         return $this->name;
     }
 
-    public function getRotationPeriod(): int
+    public function getRotationPeriod(): ?int
     {
         return $this->rotation_period;
     }
 
-    public function getOrbitalPeriod(): int
+    public function getOrbitalPeriod(): ?int
     {
         return $this->orbital_period;
     }
 
-    public function getDiameter(): int
+    public function getDiameter(): ?int
     {
         return $this->diameter;
     }
 
-    public function getClimate(): string
+    public function getClimate(): ?string
     {
         return $this->climate;
     }
 
-    public function getGravity(): string
+    public function getGravity(): ?string
     {
         return $this->gravity;
     }
 
-    public function getTerrain(): string
+    public function getTerrain(): ?string
     {
         return $this->terrain;
     }
 
-    public function getSurfaceWater(): float
+    public function getSurfaceWater(): ?float
     {
         return $this->surface_water;
     }
 
-    public function getPopulation(): int
+    public function getPopulation(): ?int
     {
         return $this->population;
     }
@@ -108,7 +115,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setRotationPeriod(int $rotationPeriod): self
+    public function setRotationPeriod(?int $rotationPeriod): self
     {
         if($this->rotation_period !== $rotationPeriod)
         {
@@ -118,7 +125,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setOrbitalPeriod(int $orbitalPeriod): self
+    public function setOrbitalPeriod(?int $orbitalPeriod): self
     {
         if($this->orbital_period !== $orbitalPeriod)
         {
@@ -128,7 +135,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setDiameter(int $diameter): self
+    public function setDiameter(?int $diameter): self
     {
         if($this->diameter !== $diameter)
         {
@@ -138,7 +145,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setClimate(string $climate): self
+    public function setClimate(?string $climate): self
     {
         if($this->climate !== $climate)
         {
@@ -148,7 +155,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setGravity(string $gravity): self
+    public function setGravity(?string $gravity): self
     {
         if($this->gravity !== $gravity)
         {
@@ -158,7 +165,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setTerrain(string $terrain): self
+    public function setTerrain(?string $terrain): self
     {
         if($this->terrain !== $terrain)
         {
@@ -168,7 +175,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setSurfaceWater(float $surfaceWater): self
+    public function setSurfaceWater(?int $surfaceWater): self
     {
         if($this->surface_water !== $surfaceWater)
         {
@@ -178,7 +185,7 @@ class Planet extends Model
         return $this;
     }
 
-    public function setPopulation(int $population): self
+    public function setPopulation(?int $population): self
     {
         if($this->population !== $population)
         {

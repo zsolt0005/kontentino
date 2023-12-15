@@ -1,12 +1,20 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\Gender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Person extends Model
+/**
+ * Represents a person entity.
+ *
+ * @package App\Models
+ * @author  Zsolt Döme
+ * @since   2023
+ */
+final class Person extends Model
 {
     use HasFactory;
 
@@ -55,12 +63,12 @@ class Person extends Model
         return $this->name;
     }
 
-    public function getHeight(): int
+    public function getHeight(): ?int
     {
         return $this->height;
     }
 
-    public function getMass(): int
+    public function getMass(): ?int
     {
         return $this->mass;
     }
@@ -80,17 +88,17 @@ class Person extends Model
         return $this->eye_color;
     }
 
-    public function getBirthYear(): string
+    public function getBirthYear(): ?string
     {
         return $this->birth_year;
     }
 
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function getHomeworld(): Planet
+    public function getHomeworld(): ?Planet
     {
         return $this->homeworld;
     }
@@ -115,7 +123,7 @@ class Person extends Model
         return $this;
     }
 
-    public function setHeight(int $height): self
+    public function setHeight(?int $height): self
     {
         if($this->height !== $height)
         {
@@ -125,7 +133,7 @@ class Person extends Model
         return $this;
     }
 
-    public function setMass(int $mass): self
+    public function setMass(?int $mass): self
     {
         if($this->mass !== $mass)
         {
@@ -165,7 +173,7 @@ class Person extends Model
         return $this;
     }
 
-    public function setBirthYear(string $birthYear): self
+    public function setBirthYear(?string $birthYear): self
     {
         if($this->birth_year !== $birthYear)
         {
@@ -175,11 +183,11 @@ class Person extends Model
         return $this;
     }
 
-    public function setGender(string $gender): self
+    public function setGender(?Gender $gender): self
     {
-        if($this->gender !== $gender)
+        if($this->gender !== $gender?->value)
         {
-            $this->gender = $gender;
+            $this->gender = $gender?->value;
         }
 
         return $this;
