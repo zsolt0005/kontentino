@@ -20,7 +20,8 @@
         "nunomaduro/collision": "^7.0.0",
         "phpunit/phpunit": "^10.1.0",
         "spatie/laravel-ignition": "^2.0.0",
-        "larastan/larastan": "^2.0.0"
+        "larastan/larastan": "^2.0.0",
+        "dg/bypass-finals": "^1.5.1"
     },
     "autoload": {
         "psr-4": {
@@ -50,7 +51,7 @@
         ],
 
         "larastan": "vendor/bin/phpstan analyse -c tests/PhpStan/phpstan.neon",
-        "phpunit": "vendor/bin/phpunit tests/Unit"
+        "phpunit": "vendor/bin/phpunit tests/Unit --bootstrap tests/Unit/bootstrap.php"
     },
     "extra": {
         "laravel": {

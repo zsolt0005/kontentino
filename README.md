@@ -12,7 +12,7 @@
  * [x] Cleanup
  * [x] Larastan lvl 9
  * [ ] Tests for the command
- * [ ] Git pipeline
+ * [x] Git pipeline
 
 ## 2. 
 
