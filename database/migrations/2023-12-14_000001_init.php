@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('skin_color');
             $table->string('eye_color');
             $table->string('birth_year')->nullable();
-            $table->enum('gender', ['male', 'female', 'hermaphrodite'])->nullable();
+            $table->enum('gender', ['male', 'female', 'hermaphrodite', 'unknown', 'n/a']);
             $table->unsignedBigInteger('homeworld_id');
             $table->date('created_at');
             $table->date('edited_at');
