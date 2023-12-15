@@ -19,7 +19,7 @@ final class PersonDataCaster implements Caster
     /**
      * Casts the given value into an array of PersonData objects.
      *
-     * @param mixed $value The value to be cast. It can be of any type.
+     * @param array<array<string, mixed>> $value The value to be cast. It can be of any type.
      * @return array<PersonData> An array of PersonData objects.
      * @throws UnknownProperties If the given value is not an array.
      */

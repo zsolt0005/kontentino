@@ -19,7 +19,7 @@ final class PlanetsResponseData extends DataTransferObject
 
 	public ?string $previous;
 
-    #[CastWith(PlanetDataCaster::class)]
     /** @var array<PlanetData> $results */
+    #[CastWith(PlanetDataCaster::class)]
     public array $results;
 }

@@ -144,7 +144,7 @@ final class SyncCommand extends Command
      * Maps the planet response array to an array with specific keys.
      *
      * @param PlanetData $planet The planet.
-     * @return array The mapped planet array with specific keys.
+     * @return array<string, mixed> The mapped planet array with specific keys.
      */
     private function mapPlanetResponse(PlanetData $planet): array
     {
@@ -167,7 +167,7 @@ final class SyncCommand extends Command
      * Maps the person response array to an array with specific keys.
      *
      * @param PersonData $person The person.
-     * @return array The mapped person array with specific keys.
+     * @return array<string, mixed> The mapped person array with specific keys.
      */
     private function mapPeopleResponse(PersonData $person): array
     {
@@ -196,7 +196,7 @@ final class SyncCommand extends Command
      * @template T
      *
      * @param T $value The property value to check.
-     * @return T|null The original property value if it is not 'unknown',
+     * @return T|string|null The original property value if it is not 'unknown',
      *                   or null if the property value is 'unknown'.
      */
     private function getNullablePropertyValue(mixed $value): mixed
@@ -210,10 +210,12 @@ final class SyncCommand extends Command
     /**
      * Prepares the gender value.
      *
-     * @param string $value The input gender value.
-     * @return string The prepared gender value.
+     * @template T
+     *
+     * @param T $value The input gender value.
+     * @return T|string The prepared gender value.
      */
-    private function normalizePropertyValue(string $value): string
+    private function normalizePropertyValue(mixed $value): mixed
     {
         return ($value !== 'n/a' && $value !== '?') ? $value : 'none';
     }

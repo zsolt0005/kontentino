@@ -19,7 +19,7 @@ final class PeopleResponseData extends DataTransferObject
 
 	public ?string $previous;
 
+    /** @var array<PersonData> $results */
     #[CastWith(PersonDataCaster::class)]
-	/** @var array<PersonData> $results */
 	public array $results;
 }

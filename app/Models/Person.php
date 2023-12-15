@@ -72,6 +72,9 @@ final class Person extends Model
     /** @inheritDoc  */
     public $timestamps = false;
 
+    /**
+     * @return BelongsTo<Planet, Person>
+     */
     public function homeworld(): BelongsTo
     {
         return $this->belongsTo(Planet::class, self::HOMEWORLD_ID);
