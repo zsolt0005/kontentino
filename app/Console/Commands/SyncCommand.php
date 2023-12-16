@@ -217,7 +217,7 @@ final class SyncCommand extends Command
      */
     private function normalizePropertyValue(mixed $value): mixed
     {
-        return ($value !== 'n/a' && $value !== '?') ? $value : 'none';
+        return ($value !== 'n/a' && $value !== 'N/A' && $value !== '?') ? $value : 'none';
     }
 
     /**

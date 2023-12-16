@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\HomeService;
 use Illuminate\View\View;
 
 /**
@@ -14,12 +15,23 @@ use Illuminate\View\View;
 final class HomeController extends Controller
 {
     /**
+     * Constructor.
+     *
+     * @param HomeService $homeService
+     */
+    public function __construct(private readonly HomeService $homeService)
+    {
+    }
+
+    /**
      * Returns the default view.
      *
      * @return View The default view.
      */
     public function default(): View
     {
-        return view('welcome');
+        $gridData = $this->homeService->prepareGridData();
+
+        return view('home')->with('gridData', $gridData);
     }
 }
