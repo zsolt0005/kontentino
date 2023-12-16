@@ -11,10 +11,18 @@
  * [x] Save fetched data to the database
  * [x] Cleanup
  * [x] Larastan lvl 9
- * [ ] Tests for the command
+ * [x] Tests for the command
  * [x] Git pipeline
 
-## 2. 
+## 2. Create a simple paginated listing of the planets
+ * [ ] Create a view for the HomeController with bootstrap
+ * [ ] A simple table template
+   * Load data for the current page
+ * [ ] Pagination: show at most 5 pages eg 1 .. 4 5 6 .. 10
+ * [ ] Filters
+   * Diameter
+   * Rotation period
+   * Gravity
 
 ## 3. 
 
