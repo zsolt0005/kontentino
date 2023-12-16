@@ -23,3 +23,6 @@
         </tbody>
     @endif
 </table>
+@if($data->links !== null)
+    {{ $data->links }}
+@endif

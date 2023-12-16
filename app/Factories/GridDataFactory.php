@@ -3,6 +3,7 @@
 namespace App\Factories;
 
 use App\Data\Components\GridData;
+use Illuminate\Contracts\Support\Htmlable;
 
 /**
  * Factory for {@see GridData}.
@@ -68,6 +69,13 @@ final class GridDataFactory
     {
         $lastRowIndex = array_key_last($this->gridData->rows);
         $this->gridData->rows[$lastRowIndex][] = $value;
+
+        return $this;
+    }
+
+    public function setLinks(?Htmlable $links): self
+    {
+        $this->gridData->links = $links;
 
         return $this;
     }

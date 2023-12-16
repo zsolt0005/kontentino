@@ -8,6 +8,14 @@
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
+    <style>
+        .pagination
+        {
+            justify-content: right;
+            margin-right: 2em;
+        }
+    </style>
 <body>
     @yield('content')
 </body>

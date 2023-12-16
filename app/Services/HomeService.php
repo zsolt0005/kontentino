@@ -59,6 +59,8 @@ final class HomeService
                 ->addCell($orbitalPeriod);
         }
 
+        $gridData->setLinks($planetsPagination->onEachSide(1)->links());
+
         return $gridData->build();
     }
 

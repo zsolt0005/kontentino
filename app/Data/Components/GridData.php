@@ -2,6 +2,8 @@
 
 namespace App\Data\Components;
 
+use Illuminate\Contracts\Support\Htmlable;
+
 /**
  * Represents a grid data structure with header columns and rows.
  *
@@ -14,6 +16,9 @@ final class GridData
     /** @var array<string> Headers. */
     public array $headerColumns = [];
 
-    /** @var array<array<mixed>>  */
+    /** @var array<array<mixed>> Rows. */
     public array $rows = [];
+
+    /** @var Htmlable|null Links. */
+    public ?Htmlable $links = null;
 }
