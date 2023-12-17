@@ -25,10 +25,10 @@
    * Gravity
 
 ## 3. 
- * [ ] Endpoint GET /stats to retrieve the 3 aggregated data
-   * 10 biggest planets
-   * Terrain distributions (How many % of planets have a specific terrain, ordered by % DESC)
-   * Species distributions (How many % of species are living on a planet, ordered by count DESC)
+ * [x] Endpoint GET /stats to retrieve the 3 aggregated data
+   * [x] 10 biggest planets
+   * [x] Terrain distributions (How many % of planets have a specific terrain, ordered by % DESC)
+   * [ ] Species distributions (How many % of species are living on a planet, ordered by count DESC)
 
 ## 4. 
  * [x] Create a migration for the logbook

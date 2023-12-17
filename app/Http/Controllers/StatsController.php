@@ -23,11 +23,7 @@ final class StatsController extends Controller
      */
     public function tenBiggestPlanets(): JsonResponse
     {
-        $planets = $this->getTenBiggestPlanets();
-
-        return response()->json(
-            array_map(static fn(Planet $planet) => [$planet->getName() => $planet->getDiameter() . ' km'], $planets->all())
-        );
+        return response()->json($this->getTenBiggestPlanets());
     }
 
     /**
@@ -43,11 +39,23 @@ final class StatsController extends Controller
     /**
      * Retrieves the ten biggest planets.
      *
-     * @return Collection<int, Planet>
+     * @return array<string, string>
      */
-    private function getTenBiggestPlanets(): Collection
+    private function getTenBiggestPlanets(): array
     {
-        return Planet::query()->orderBy(Planet::DIAMETER, 'desc')->limit(10)->get();
+        /** @var Collection<int, Planet> $planets */
+        $planets = Planet::query()
+            ->orderBy(Planet::DIAMETER, 'desc')
+            ->limit(10)
+            ->get();
+
+        $planetNameToDiameterMap = [];
+        foreach ($planets as $planet)
+        {
+            $planetNameToDiameterMap[$planet->getName()] = $planet->getDiameter() . ' km';
+        }
+
+        return $planetNameToDiameterMap;
     }
 
     /**
