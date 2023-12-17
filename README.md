@@ -15,10 +15,10 @@
  * [x] Git pipeline
 
 ## 2. Create a simple paginated listing of the planets
- * [ ] Create a view for the HomeController with bootstrap
- * [ ] A simple table template
+ * [x] Create a view for the HomeController with bootstrap
+ * [x] A simple table template
    * Load data for the current page
- * [ ] Pagination: show at most 5 pages eg 1 .. 4 5 6 .. 10
+ * [x] Pagination: show at most 5 pages eg 1 .. 4 5 6 .. 10
  * [ ] Filters
    * Diameter
    * Rotation period

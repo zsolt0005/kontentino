@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Data\Components\GridData;
 use App\Factories\GridDataFactory;
 use App\Models\Planet;
+use App\View\Components\Data\GridData;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Number;
 

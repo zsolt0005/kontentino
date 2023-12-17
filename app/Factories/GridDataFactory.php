@@ -2,7 +2,8 @@
 
 namespace App\Factories;
 
-use App\Data\Components\GridData;
+use App\View\Components\Data\GridData;
+use App\View\Components\Data\IFilterData;
 use Illuminate\Contracts\Support\Htmlable;
 
 /**
@@ -61,7 +62,7 @@ final class GridDataFactory
     /**
      * Adds a cell value to the last row in the grid.
      *
-     * @param mixed $value The value of the cell to be added.
+     * @param scalar $value The value of the cell to be added.
      *
      * @return self
      */
@@ -76,6 +77,20 @@ final class GridDataFactory
     public function setLinks(?Htmlable $links): self
     {
         $this->gridData->links = $links;
+
+        return $this;
+    }
+
+    /**
+     * Adds a new filter to the grid.
+     *
+     * @param IFilterData $filterData
+     *
+     * @return self
+     */
+    public function addFilter(IFilterData $filterData): self
+    {
+        $this->gridData->filters[] = $filterData;
 
         return $this;
     }

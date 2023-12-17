@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Data\Components\GridData;
+use App\View\Components\Data\GridData;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 

@@ -1,7 +1,7 @@
 @extends('base')
 
-@php /** @var App\Data\Components\GridData $gridData */ @endphp
+@php /** @var \App\View\Components\Data\GridData $gridData */ @endphp
 
 @section('content')
-    <x-grid-component :gridData="$gridData" />
+    <x-grid-component :gridData="$gridData"/>
 @endsection
