@@ -9,3 +9,4 @@ Route::get('/', [HomeController::class, 'default'])->name('home')->middleware(St
 
 # Rest endpoints
 Route::post('/logbook', [LogbookController::class, 'create']);
+Route::get('/logbook/{id}', [LogbookController::class, 'get']);

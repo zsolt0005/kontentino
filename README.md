@@ -30,11 +30,11 @@
  * [x] Create a migration for the logbook
    * id, person_id, planet_id, location, severity, note, created_at
  * [x] Create the Model and service for the table
- * [ ] Create a new endpoint POST /logbook/create
+ * [x] Create a new endpoint POST /logbook/create
    * Take and validate data
    * Save in the DB
      * note should be encrypted
- * [ ] Create a new endpoint GET /logbook/{id}
+ * [x] Create a new endpoint GET /logbook/{id}
    * Return log book data
- * [ ] OpenApi Documentation for both endpoints
+ * [ ] Test both endpoints
 

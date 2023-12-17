@@ -13,4 +13,14 @@ use App\Models\Logbook;
  */
 final class LogbookService
 {
+    /**
+     * Fetches a {@see Logbook} by its ID.
+     *
+     * @param int $id
+     * @return Logbook|null
+     */
+    public function fetchById(int $id): ?Logbook
+    {
+        return Logbook::find($id);
+    }
 }

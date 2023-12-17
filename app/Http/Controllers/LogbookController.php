@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Data\LogbookData;
 use App\Models\Logbook;
+use App\Services\LogbookService;
 use App\Services\PersonService;
 use App\Services\PlanetService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Crypt;
 
 /**
  * Logbook controller.
@@ -23,10 +23,12 @@ final class LogbookController extends Controller
      *
      * @param PersonService $personService
      * @param PlanetService $planetService
+     * @param LogbookService $logbookService
      */
     public function __construct(
         private readonly PersonService $personService,
         private readonly PlanetService $planetService,
+        private readonly LogbookService $logbookService
     )
     {
     }
@@ -44,6 +46,25 @@ final class LogbookController extends Controller
         $createdLogBookId = $this->createEntry($logBook);
 
         return response()->json(['logBookId' => $createdLogBookId]);
+    }
+
+    /**
+     * Retrieve an existing logbook.
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function get(int $id): JsonResponse
+    {
+        $logBook = $this->logbookService->fetchById($id);
+
+        if($logBook === null)
+        {
+            return response()->json(['message' => 'Logbook not found for id: ' . $id], 404);
+        }
+
+        return response()->json($logBook);
     }
 
     /**
@@ -71,7 +92,7 @@ final class LogbookController extends Controller
             Logbook::LATITUDE => $logbookData->latitude,
             Logbook::LONGITUDE => $logbookData->longitude,
             Logbook::SEVERITY => $logbookData->severity,
-            Logbook::NOTE => Crypt::encryptString($logbookData->note)
+            Logbook::NOTE => $logbookData->note
         ]);
 
         return $logbook->getId();
