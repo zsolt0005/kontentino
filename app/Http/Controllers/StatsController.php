@@ -43,7 +43,6 @@ final class StatsController extends Controller
      */
     private function getTenBiggestPlanets(): array
     {
-        /** @var Collection<int, Planet> $planets */
         $planets = Planet::query()
             ->orderBy(Planet::DIAMETER, 'desc')
             ->limit(10)
