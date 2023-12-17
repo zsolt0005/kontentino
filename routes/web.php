@@ -13,3 +13,4 @@ Route::post('/logbook', [LogbookController::class, 'create']);
 Route::get('/logbook/{id}', [LogbookController::class, 'get']);
 
 Route::get('/stats/ten-biggest-planets', [StatsController::class, 'tenBiggestPlanets']);
+Route::get('/stats/terrain-distributions', [StatsController::class, 'terrainDistributions']);
