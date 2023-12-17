@@ -27,4 +27,14 @@
 ## 3. 
 
 ## 4. 
+ * [ ] Create a migration for the logbook
+   * id, person_id, planet_id, location, servity, note, created_at
+ * [ ] Create the Model and service for the table
+ * [ ] Create a new endpoint POST /logbook/create
+   * Take and validate data
+   * Save in the DB
+     * note should be encrypted
+ * [ ] Create a new endpoint GET /logbook/{id}
+   * Return log book data
+ * [ ] OpenApi Documentation for both endpoints
 
