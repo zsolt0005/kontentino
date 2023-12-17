@@ -162,7 +162,11 @@ final class SyncCommand extends Command
      */
     private function mapPlanetResponse(PlanetData $planet): array
     {
+        $planetUrlSegments = explode('/', $planet->url);
+        $planetId = $planetUrlSegments[count($planetUrlSegments) - 2];
+
         return [
+            Planet::ID               => $planetId,
             Planet::NAME             => $planet->name,
             Planet::ROTATION_PERIOD  => $this->getNullablePropertyValue($planet->rotationPeriod),
             Planet::ORBITAL_PERIOD   => $this->getNullablePropertyValue($planet->orbitalPeriod),
@@ -189,9 +193,13 @@ final class SyncCommand extends Command
     {
         // The ids from the source are matching with the imported ones
         $planetUrlSegments = explode('/', $person->homeWorldUrl);
+        $personUrlSegments = explode('/', $person->url);
+
         $planetId = $planetUrlSegments[count($planetUrlSegments) - 2];
+        $personId = $personUrlSegments[count($personUrlSegments) - 2];
 
         return [
+            Person::ID           => $personId,
             Person::NAME         => $person->name,
             Person::HEIGHT       => $this->getNullablePropertyValue($person->height),
             Person::MASS         => $this->getNullablePropertyValue($this->removeNumberThousandsFormatting($person->mass)),

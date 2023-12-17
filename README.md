@@ -25,6 +25,10 @@
    * Gravity
 
 ## 3. 
+ * [ ] Endpoint GET /stats to retrieve the 3 aggregated data
+   * 10 biggest planets
+   * Terrain distributions (How many % of planets have a specific terrain, ordered by % DESC)
+   * 
 
 ## 4. 
  * [x] Create a migration for the logbook
