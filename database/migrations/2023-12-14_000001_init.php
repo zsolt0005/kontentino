@@ -32,7 +32,7 @@ return new class extends Migration
             $table->unsignedBigInteger('planet_id');
             $table->string('terrain_type');
 
-            $table->primary('planet_id', 'terrain_type');
+            $table->primary(['planet_id', 'terrain_type']);
 
             $table->foreign('planet_id')
                 ->references('id')
