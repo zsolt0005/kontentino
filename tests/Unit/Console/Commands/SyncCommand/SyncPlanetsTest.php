@@ -3,6 +3,7 @@
 namespace Console\Commands\SyncCommand;
 
 use App\Console\Commands\SyncCommand;
+use App\Data\PlanetData;
 use App\Data\PlanetsResponseData;
 use App\Models\Planet;
 use App\Services\PersonService;
@@ -12,8 +13,9 @@ use Exception;
 use Faker\Provider\DateTime;
 use Faker\Provider\Text;
 use Mockery;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Spatie\LaravelData\DataCollection;
+use Tests\TestCase;
 
 /**
  * Test.
@@ -87,21 +89,30 @@ final class SyncPlanetsTest extends TestCase
      */
     private static function prepareResponseData(string $gravity, string $climate): PlanetsResponseData
     {
-        return new PlanetsResponseData([
-            'results' => [[
-                'name' => Text::randomAscii(),
-                'rotation_period' => (string) Text::randomDigit(),
-                'orbital_period' => (string) Text::randomDigit(),
-                'diameter' => (string) Text::randomDigit(),
-                'climate' => $climate,
-                'gravity' => $gravity,
-                'terrain' => Text::randomAscii(),
-                'surface_water' => Text::randomAscii(),
-                'population' => Text::randomAscii(),
-                'created' => DateTime::iso8601(),
-                'edited' => DateTime::iso8601(),
-                'url' => '/1/',
-            ]]
+        $planetData = new PlanetData();
+
+        $planetData->name = Text::randomAscii();
+        $planetData->rotationPeriod = (string) Text::randomDigit();
+        $planetData->orbitalPeriod = (string) Text::randomDigit();
+        $planetData->diameter = (string) Text::randomDigit();
+        $planetData->climate = $climate;
+        $planetData->gravity = $gravity;
+        $planetData->terrain = Text::randomAscii();
+        $planetData->surfaceWater = Text::randomAscii();
+        $planetData->population = Text::randomAscii();
+        $planetData->createdAt = DateTime::iso8601();
+        $planetData->editedAt = DateTime::iso8601();
+        $planetData->url = '/1/';
+
+        $results = Mockery::mock(DataCollection::class, [
+            'items' => [$planetData]
         ]);
+        $results->name = Text::randomAscii();
+
+        $data = Mockery::mock(PlanetsResponseData::class);
+        $data->next = null;
+        $data->results = $results;
+
+        return $data;
     }
 }
