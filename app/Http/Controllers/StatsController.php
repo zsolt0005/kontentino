@@ -32,7 +32,7 @@ final class StatsController extends Controller
     /**
      * Retrieves the ten biggest planets.
      *
-     * @return Collection<Planet>
+     * @return Collection<int, Planet>
      */
     private function getTenBiggestPlanets(): Collection
     {
