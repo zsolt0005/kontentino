@@ -8,6 +8,7 @@ use App\Data\PlanetsResponseData;
 use App\Models\Planet;
 use App\Services\PersonService;
 use App\Services\PlanetService;
+use App\Services\PlanetToTerrainService;
 use App\Services\SwapiService;
 use Exception;
 use Faker\Provider\DateTime;
@@ -65,7 +66,8 @@ final class SyncPlanetsTest extends TestCase
         $command = new SyncCommand(
             Mockery::mock(SwapiService::class, ['fetchPlanetsByPage' => $responseData]),
             Mockery::mock(PersonService::class),
-            $planetServiceMock
+            $planetServiceMock,
+            Mockery::mock(PlanetToTerrainService::class, ['insertOrIgnoreAll' => null])
         );
 
         $planetServiceMock->expects('insertOrIgnoreAll')->andReturnUsing(
