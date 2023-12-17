@@ -27,8 +27,8 @@
 ## 3. 
 
 ## 4. 
- * [ ] Create a migration for the logbook
-   * id, person_id, planet_id, location, servity, note, created_at
+ * [x] Create a migration for the logbook
+   * id, person_id, planet_id, location, severity, note, created_at
  * [ ] Create the Model and service for the table
  * [ ] Create a new endpoint POST /logbook/create
    * Take and validate data
