@@ -1,7 +1,8 @@
+@php use Illuminate\Support\Facades\URL; @endphp
 @php /** @var \App\View\Components\Data\GridData $data */ @endphp
 
 @if(!empty($data->filters))
-    <form action="">
+    <form action="" method="GET">
         <div class="container-fluid mt-3 mb-3">
             <div class="row">
                 <div class="col">
@@ -14,14 +15,14 @@
                     @if($filter->isActive())
                         @php($hasActiveFilters = true)
                     @endif
-                <div class="col">
-                    <x-dynamic-component :component="$filter->getComponentName()" :filterData="$filter"/>
-                </div>
+                    <div class="col">
+                        <x-dynamic-component :component="$filter->getComponentName()" :filterData="$filter"/>
+                    </div>
                 @endforeach
 
                 <div class="col">
                     @if($hasActiveFilters)
-                        <input type="reset" value="Reset" class="btn btn-secondary">
+                        <a href="{{ URL::route('home') }}" class="btn btn-secondary">Reset</a>
                     @endif
 
                     <input type="submit" value="Filter" class="btn btn-primary">

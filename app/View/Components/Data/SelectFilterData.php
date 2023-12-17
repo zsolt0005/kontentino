@@ -16,14 +16,14 @@ final class SelectFilterData implements IFilterData
      *
      * @param string $name Name.
      * @param string $label Label text.
-     * @param string $selectedValue Default value.
+     * @param string|null $selectedValue Default value.
      * @param array<SelectFilterValueData> $values Select values.
      */
     public function __construct(
-        public string $name,
-        public string $label,
-        public string $selectedValue,
-        public array  $values
+        public readonly string $name,
+        public readonly string $label,
+        public readonly ?string $selectedValue,
+        public readonly array  $values
     )
     {
     }
@@ -33,12 +33,12 @@ final class SelectFilterData implements IFilterData
      *
      * @param string $name
      * @param string $label
-     * @param string $selectedValue
+     * @param string|null $selectedValue
      * @param array<SelectFilterValueData> $values
      *
      * @return self
      */
-    public static function create(string $name, string $label, string $selectedValue, array $values): self
+    public static function create(string $name, string $label, ?string $selectedValue, array $values): self
     {
         return new self($name, $label, $selectedValue, $values);
     }
@@ -52,6 +52,6 @@ final class SelectFilterData implements IFilterData
     /** @inheritDoc */
     public function isActive(): bool
     {
-        return $this->selectedValue !== '';
+        return !empty($this->selectedValue);
     }
 }

@@ -4,8 +4,15 @@ namespace App\Services;
 
 use App\Factories\GridDataFactory;
 use App\Models\Planet;
+use App\Utils\TypeUtils;
 use App\View\Components\Data\GridData;
+use App\View\Components\Data\SelectFilterData;
+use App\View\Components\Data\SelectFilterValueData;
+use App\View\Components\Data\TextFilterData;
+use App\View\Components\Data\TwoCellNumberFilterData;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Number;
 
 /**
@@ -17,15 +24,40 @@ use Illuminate\Support\Number;
  */
 final class HomeService
 {
-    public function __construct(private readonly PlanetService $planetService)
-    {
-    }
+    private const FILTER_NAME = 'filter-name';
+    private const FILTER_DIAMETER_LEFT = 'filter-diameter-left';
+    private const FILTER_DIAMETER_RIGHT = 'filter-diameter-right';
+    private const FILTER_ROTATION_PERIOD_LEFT = 'filter-rotation-period-left';
+    private const FILTER_ROTATION_PERIOD_RIGHT = 'filter-rotation-period-right';
+    private const FILTER_GRAVITY = 'filter-gravity';
 
+    /**
+     * Prepares the grid data.
+     *
+     * @return GridData
+     */
     public function prepareGridData(): GridData
     {
-        $planetsPagination = $this->getPlanetsPagination(10);
+        $queryParams = Request::query();
 
-        $gridData = GridDataFactory::create()
+        $nameFilterValue = $queryParams[self::FILTER_NAME] ?? null;
+        $diameterFromFilterValue = TypeUtils::convertToInt($queryParams[self::FILTER_DIAMETER_LEFT] ?? null);
+        $diameterToFilterValue =  TypeUtils::convertToInt($queryParams[self::FILTER_DIAMETER_RIGHT] ?? null);
+        $rotationPeriodFromFilterValue =  TypeUtils::convertToInt($queryParams[self::FILTER_ROTATION_PERIOD_LEFT] ?? null);
+        $rotationPeriodToFilterValue =  TypeUtils::convertToInt($queryParams[self::FILTER_ROTATION_PERIOD_RIGHT] ?? null);
+        $gravityFilterValue = $queryParams[self::FILTER_GRAVITY] ?? null;
+
+        $planets = Planet::query();
+        if($nameFilterValue !== null) $planets->where(Planet::NAME, 'like', $nameFilterValue . '%');
+        if($diameterFromFilterValue !== null) $planets->where(Planet::DIAMETER, '>=', $diameterFromFilterValue);
+        if($diameterToFilterValue !== null) $planets->where(Planet::DIAMETER, '<=', $diameterToFilterValue);
+        if($rotationPeriodFromFilterValue !== null) $planets->where(Planet::ROTATION_PERIOD, '>=', $rotationPeriodFromFilterValue);
+        if($rotationPeriodToFilterValue !== null) $planets->where(Planet::ROTATION_PERIOD, '<=', $rotationPeriodToFilterValue);
+        if($gravityFilterValue !== null) $planets->where(Planet::GRAVITY, '=' , $gravityFilterValue);
+
+        $planetsPagination = $this->getPlanetsPagination($planets);
+
+        $gridDataFactory = GridDataFactory::create()
             ->addHeader('#')
             ->addHeader('Name')
             ->addHeader('Diameter')
@@ -46,7 +78,7 @@ final class HomeService
             $population = $planet->getPopulation() !== null ? Number::format($planet->getPopulation()) : '-';
             $surfaceWater = $planet->getSurfaceWater() !== null ? Number::percentage($planet->getSurfaceWater()) : '-';
 
-            $gridData->addRow()
+            $gridDataFactory->addRow()
                 ->addCell($planet->getId())
                 ->addCell($planet->getName())
                 ->addCell($diameter)
@@ -59,24 +91,46 @@ final class HomeService
                 ->addCell($orbitalPeriod);
         }
 
-        $gridData->setLinks($planetsPagination->onEachSide(1)->links());
+        $gridDataFactory->setLinks($planetsPagination->appends($queryParams)->onEachSide(1)->links());
 
-        return $gridData->build();
+        $gridDataFactory->addFilter(TextFilterData::create(self::FILTER_NAME, 'Name', $nameFilterValue));
+        $gridDataFactory->addFilter(TwoCellNumberFilterData::create(
+            self::FILTER_DIAMETER_LEFT,
+            self::FILTER_DIAMETER_RIGHT,
+            'Diameter',
+            leftCellValue: $diameterFromFilterValue,
+            rightCellValue: $diameterToFilterValue
+        ));
+        $gridDataFactory->addFilter(TwoCellNumberFilterData::create(
+            self::FILTER_ROTATION_PERIOD_LEFT,
+            self::FILTER_ROTATION_PERIOD_RIGHT,
+            'Rotation period',
+            leftCellValue: $rotationPeriodFromFilterValue,
+            rightCellValue: $rotationPeriodToFilterValue
+        ));
+        $gridDataFactory->addFilter(SelectFilterData::create(
+            self::FILTER_GRAVITY,
+            'Gravity',
+            $gravityFilterValue,
+            [SelectFilterValueData::empty(), SelectFilterValueData::create('hello', 'Hello')]
+        ));
+
+        return $gridDataFactory->build();
     }
 
     /**
      * Gets the pagination for the planets.
      *
-     * @param positive-int $itemsPerPage
+     * @param Builder $planetsQueryBuilder
      * @return LengthAwarePaginator<Planet>
      */
-    private function getPlanetsPagination(int $itemsPerPage): LengthAwarePaginator
+    private function getPlanetsPagination(Builder $planetsQueryBuilder): LengthAwarePaginator
     {
-        $planetsPagination = $this->planetService->paginate($itemsPerPage);
+        $planetsPagination = $planetsQueryBuilder->paginate(10);
 
         if($planetsPagination->currentPage() > $planetsPagination->lastPage())
         {
-            return $this->planetService->paginate($itemsPerPage, page: $planetsPagination->lastPage());
+            return $planetsQueryBuilder->paginate(10, page: $planetsPagination->lastPage());
         }
 
         return $planetsPagination;

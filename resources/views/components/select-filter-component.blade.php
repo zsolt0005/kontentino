@@ -5,7 +5,7 @@
 
     <select class="form-select" aria-label="{{ $data->label }}" name="{{ $data->name }}">
         @foreach($data->values as $value)
-            <option value="{{ $value->key }}" {{ $value->key == $data->selectedValue ? 'selected' : '' }}>{{ $value->value }}</option>
+            <option value="{{ $value->key }}" {{ $value->key == ($data->selectedValue ?: '') ? 'selected' : '' }}>{{ $value->value }}</option>
         @endforeach
     </select>
 </div>

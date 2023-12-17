@@ -23,13 +23,13 @@ final class TwoCellNumberFilterData implements IFilterData
      * @param int|null $rightCellValue Default value for the right cell.
      */
     public function __construct(
-        public string $leftCellName,
-        public string $rightCellName,
-        public string $label,
-        public string $leftCellLabel,
-        public string $rightCellLabel,
-        public ?int $leftCellValue = null,
-        public ?int $rightCellValue = null
+        public readonly string $leftCellName,
+        public readonly string $rightCellName,
+        public readonly string $label,
+        public readonly string $leftCellLabel,
+        public readonly string $rightCellLabel,
+        public readonly ?int $leftCellValue = null,
+        public readonly ?int $rightCellValue = null
     )
     {}
 
@@ -50,8 +50,8 @@ final class TwoCellNumberFilterData implements IFilterData
         string $leftCellName,
         string $rightCellName,
         string $label,
-        string $leftCellLabel,
-        string $rightCellLabel,
+        string $leftCellLabel = 'From',
+        string $rightCellLabel = 'To',
         ?int $leftCellValue = null,
         ?int $rightCellValue = null): self
     {
@@ -67,6 +67,6 @@ final class TwoCellNumberFilterData implements IFilterData
     /** @inheritDoc */
     public function isActive(): bool
     {
-        return $this->leftCellValue !== null && $this->rightCellValue !== null;
+        return $this->leftCellValue !== null || $this->rightCellValue !== null;
     }
 }
