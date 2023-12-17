@@ -32,6 +32,15 @@ final class HomeService
     private const FILTER_GRAVITY = 'filter-gravity';
 
     /**
+     * Constructor.
+     *
+     * @param PlanetService $planetService
+     */
+    public function __construct(private readonly PlanetService $planetService)
+    {
+    }
+
+    /**
      * Prepares the grid data.
      *
      * @return GridData
@@ -112,7 +121,7 @@ final class HomeService
             self::FILTER_GRAVITY,
             'Gravity',
             $gravityFilterValue,
-            [SelectFilterValueData::empty(), SelectFilterValueData::create('hello', 'Hello')]
+            $this->prepareGravityValuesData()
         ));
 
         return $gridDataFactory->build();
@@ -134,5 +143,24 @@ final class HomeService
         }
 
         return $planetsPagination;
+    }
+
+    /**
+     * Prepares the possible values of the gravity.
+     *
+     * @return array<SelectFilterValueData>
+     */
+    private function prepareGravityValuesData(): array
+    {
+        /** @var array<int, string> $gravities */
+        $gravities = $this->planetService
+            ->getDistinctGravityValues()
+            ->filter(static fn(mixed $value, int $key) => $value !== null)
+            ->map(static fn(mixed $value) => (string) $value)
+            ->toArray();
+
+        $gravityValuesData = array_map(static fn(string $gravity) => SelectFilterValueData::create($gravity, $gravity), $gravities);
+
+        return [SelectFilterValueData::empty(), ...$gravityValuesData];
     }
 }

@@ -19,7 +19,7 @@
  * [x] A simple table template
    * Load data for the current page
  * [x] Pagination: show at most 5 pages eg 1 .. 4 5 6 .. 10
- * [ ] Filters
+ * [x] Filters
    * Diameter
    * Rotation period
    * Gravity

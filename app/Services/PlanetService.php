@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Planet;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Provides methods for retrieving and inserting {@see Planet} data.
@@ -50,5 +52,17 @@ final class PlanetService
     public function insertAll(array $planets): void
     {
         Planet::insert($planets);
+    }
+
+    /**
+     * Retrieves: Distinct gravity values.
+     *
+     * @return Collection<int, scalar>
+     */
+    public function getDistinctGravityValues(): Collection
+    {
+        return Planet::select(Planet::GRAVITY)
+            ->distinct()
+            ->pluck(Planet::GRAVITY);
     }
 }
