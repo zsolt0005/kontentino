@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Crypt;
  * @package App\Models
  * @author  Zsolt Döme
  * @since   2023
+ *
+ * @property string $note
  */
 final class Logbook extends Model
 {
@@ -82,7 +84,7 @@ final class Logbook extends Model
     /**
      * Note attribute getter and setter mutators.
      *
-     * @return Attribute
+     * @return Attribute<string, string>
      */
     protected function note(): Attribute
     {

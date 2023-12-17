@@ -8,6 +8,8 @@ use App\Services\LogbookService;
 use App\Services\PersonService;
 use App\Services\PlanetService;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Logbook controller.
@@ -37,10 +39,14 @@ final class LogbookController extends Controller
      * Create log book endpoint.
      *
      * @return JsonResponse
+     * @throws HttpException
      */
     public function create(): JsonResponse
     {
-        $logBook = LogbookData::from(request()->json()->all());
+        /** @var InputBag $jsonRequest */
+        $jsonRequest = request()->json();
+
+        $logBook = LogbookData::from($jsonRequest->all());
 
         $this->validateNewLogbookData($logBook);
         $createdLogBookId = $this->createEntry($logBook);
@@ -73,22 +79,29 @@ final class LogbookController extends Controller
      * @param LogbookData $logbookData
      *
      * @return int
+     * @throws HttpException
      */
     private function createEntry(LogbookData $logbookData): int
     {
-        if($this->personService->fetchById($logbookData->personId) === null)
+        /** @var int $personId */
+        $personId = $logbookData->personId;
+
+        /** @var int $planetId */
+        $planetId = $logbookData->planetId;
+
+        if($this->personService->fetchById($personId) === null)
         {
-            abort(400, 'Person with id ' . $logbookData->personId . ' does not exists');
+            abort(400, 'Person with id ' . $personId . ' does not exists');
         }
 
-        if($this->planetService->fetchById($logbookData->planetId) === null)
+        if($this->planetService->fetchById($planetId) === null)
         {
-            abort(400, 'Planet with id ' . $logbookData->planetId . ' does not exists');
+            abort(400, 'Planet with id ' . $planetId . ' does not exists');
         }
 
         $logbook = Logbook::create([
-            Logbook::PERSON_ID => $logbookData->personId,
-            Logbook::PLANET_ID => $logbookData->planetId,
+            Logbook::PERSON_ID => $personId,
+            Logbook::PLANET_ID => $planetId,
             Logbook::LATITUDE => $logbookData->latitude,
             Logbook::LONGITUDE => $logbookData->longitude,
             Logbook::SEVERITY => $logbookData->severity,
@@ -104,6 +117,7 @@ final class LogbookController extends Controller
      * @param LogbookData $logbookData
      *
      * @return void
+     * @throws HttpException
      */
     private function validateNewLogbookData(LogbookData $logbookData): void
     {
