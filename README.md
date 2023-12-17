@@ -36,5 +36,5 @@
      * note should be encrypted
  * [x] Create a new endpoint GET /logbook/{id}
    * Return log book data
- * [ ] Test both endpoints
+ * [x] Test both endpoints
 
