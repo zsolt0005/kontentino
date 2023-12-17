@@ -6,8 +6,10 @@ use App\Data\PersonData;
 use App\Data\PlanetData;
 use App\Models\Person;
 use App\Models\Planet;
+use App\Models\PlanetToTerrain;
 use App\Services\PersonService;
 use App\Services\PlanetService;
+use App\Services\PlanetToTerrainService;
 use App\Services\SwapiService;
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
@@ -36,11 +38,13 @@ final class SyncCommand extends Command
      * @param SwapiService $swapiService
      * @param PersonService $personService
      * @param PlanetService $planetService
+     * @param PlanetToTerrainService $planetToTerrainService
      */
     public function __construct(
         private readonly SwapiService $swapiService,
         private readonly PersonService $personService,
         private readonly PlanetService $planetService,
+        private readonly PlanetToTerrainService $planetToTerrainService
     )
     {
         parent::__construct();
@@ -95,6 +99,9 @@ final class SyncCommand extends Command
 
             $planetsToInsert = array_map(fn(PlanetData $planet) => $this->mapPlanetResponse($planet), $planets->results->items());
             $this->planetService->insertOrIgnoreAll($planetsToInsert);
+
+            $planetToTerrainInsert = $this->preparePlanetToTerrainInsert($planets->results->items());
+            $this->planetToTerrainService->insertOrIgnoreAll($planetToTerrainInsert);
 
             if($planets->next !== null)
             {
@@ -156,7 +163,7 @@ final class SyncCommand extends Command
      * Maps the planet response array to an array with specific keys.
      *
      * @param PlanetData $planet The planet.
-     * @return array<string, mixed> The mapped planet array with specific keys.
+     * @return array<string, string|null> The mapped planet array with specific keys.
      *
      * @throws InvalidFormatException
      */
@@ -173,7 +180,6 @@ final class SyncCommand extends Command
             Planet::DIAMETER         => $this->getNullablePropertyValue($planet->diameter),
             Planet::CLIMATE          => $this->getNullablePropertyValue($planet->climate),
             Planet::GRAVITY          => $this->getNullablePropertyValue($planet->gravity),
-            Planet::TERRAIN          => $this->getNullablePropertyValue($planet->terrain),
             Planet::SURFACE_WATER    => $this->getNullablePropertyValue($planet->surfaceWater),
             Planet::POPULATION       => $this->getNullablePropertyValue($planet->population),
             Planet::CREATED_AT       => Carbon::parse($planet->createdAt)->format('Y-m-d H:i:s'),
@@ -212,6 +218,36 @@ final class SyncCommand extends Command
             Person::CREATED_AT   => Carbon::parse($person->createdAt)->format('Y-m-d H:i:s'),
             Person::EDITED_AT    => Carbon::parse($person->editedAt)->format('Y-m-d H:i:s')
         ];
+    }
+
+    /**
+     * Prepares the insert for the {@see PlanetToTerrain} relations.
+     *
+     * @param array<PlanetData> $planets
+     *
+     * @return array<mixed[]>
+     */
+    private function preparePlanetToTerrainInsert(array $planets): array
+    {
+        $planetsToTerrainsMap = [];
+
+        foreach ($planets as $planet)
+        {
+            $terrains = $this->getNullablePropertyValue($planet->terrain);
+            if($terrains === null) continue;
+
+            $terrainTypes = explode(',', str_replace(' ', '', $terrains));
+
+            $planetUrlSegments = explode('/', $planet->url);
+            $planetId = $planetUrlSegments[count($planetUrlSegments) - 2];
+
+            foreach ($terrainTypes as $terrainType)
+            {
+                $planetsToTerrainsMap[] = [PlanetToTerrain::PLANET_ID => $planetId, PlanetToTerrain::TERRAIN_TYPE => $terrainType];
+            }
+        }
+
+        return $planetsToTerrainsMap;
     }
 
     /**

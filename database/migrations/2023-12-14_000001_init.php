@@ -22,11 +22,22 @@ return new class extends Migration
             $table->integer('diameter')->nullable();
             $table->string('climate')->nullable();
             $table->string('gravity')->nullable();
-            $table->string('terrain')->nullable();
             $table->integer('surface_water')->nullable();
             $table->unsignedBigInteger('population')->nullable();
             $table->date('created_at');
             $table->date('edited_at');
+        });
+
+        Schema::create('planet_to_terrain', function (Blueprint $table) {
+            $table->unsignedBigInteger('planet_id');
+            $table->string('terrain_type');
+
+            $table->primary('planet_id', 'terrain_type');
+
+            $table->foreign('planet_id')
+                ->references('id')
+                ->on('planets')
+                ->onDelete('cascade');
         });
 
         Schema::create('people', function (Blueprint $table) {
@@ -59,6 +70,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('people');
+        Schema::dropIfExists('planet_to_terrain');
         Schema::dropIfExists('planets');
     }
 };

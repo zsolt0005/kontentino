@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Represents a planet entity.
@@ -40,9 +41,6 @@ final class Planet extends Model
     /** @var string The name of the "gravity" column. */
     public const GRAVITY = 'gravity';
 
-    /** @var string The name of the "terrain" column. */
-    public const TERRAIN = 'terrain';
-
     /** @var string The name of the "surface_water" column. */
     public const SURFACE_WATER = 'surface_water';
 
@@ -66,7 +64,6 @@ final class Planet extends Model
         self::DIAMETER,
         self::CLIMATE,
         self::GRAVITY,
-        self::TERRAIN,
         self::SURFACE_WATER,
         self::POPULATION,
         self::CREATED_AT,
@@ -75,6 +72,14 @@ final class Planet extends Model
 
     /** @inheritDoc  */
     public $timestamps = false;
+
+    /**
+     * @return HasMany<PlanetToTerrain>
+     */
+    public function terrains(): HasMany
+    {
+        return $this->hasMany(PlanetToTerrain::class, PlanetToTerrain::PLANET_ID);
+    }
 
     /**
      * Gets: the ID of the planet.
@@ -144,16 +149,6 @@ final class Planet extends Model
     public function getGravity(): ?string
     {
         return $this->gravity;
-    }
-
-    /**
-     * Gets: The terrain of this planet. Comma separated if diverse.
-     *
-     * @return string|null
-     */
-    public function getTerrain(): ?string
-    {
-        return $this->terrain;
     }
 
     /**
@@ -287,22 +282,6 @@ final class Planet extends Model
         if($this->gravity !== $gravity)
         {
             $this->gravity = $gravity;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets: The terrain of this planet. Comma separated if diverse.
-     *
-     * @param string|null $terrain
-     * @return $this
-     */
-    public function setTerrain(?string $terrain): self
-    {
-        if($this->terrain !== $terrain)
-        {
-            $this->terrain = $terrain;
         }
 
         return $this;

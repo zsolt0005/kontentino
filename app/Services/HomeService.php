@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Factories\GridDataFactory;
 use App\Models\Planet;
+use App\Models\PlanetToTerrain;
 use App\Utils\TypeUtils;
 use App\View\Components\Data\GridData;
 use App\View\Components\Data\SelectFilterData;
@@ -89,6 +90,11 @@ final class HomeService
             $population = $planet->getPopulation() !== null ? Number::format($planet->getPopulation()) : '-';
             $surfaceWater = $planet->getSurfaceWater() !== null ? Number::percentage($planet->getSurfaceWater()) : '-';
 
+            $terrainTypes = $planet->terrains()
+                ->get()
+                ->pluck(PlanetToTerrain::TERRAIN_TYPE)
+                ->implode(', ');
+
             $gridDataFactory->addRow()
                 ->addCell($planet->getId())
                 ->addCell($planet->getName())
@@ -97,7 +103,7 @@ final class HomeService
                 ->addCell($planet->getGravity() ?: '-')
                 ->addCell($population)
                 ->addCell($planet->getClimate() ?: '-')
-                ->addCell($planet->getTerrain() ?: '-')
+                ->addCell($terrainTypes ?: '-')
                 ->addCell($surfaceWater)
                 ->addCell($orbitalPeriod);
         }
