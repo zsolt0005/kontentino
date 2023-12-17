@@ -25,7 +25,9 @@ return new class extends Migration
             $table->unsignedTinyInteger('severity')->comment('Higher number = greater severity');
             $table->text('note')->comment('Encrypted note');
 
-            $table->dateTime('created_at')->comment('Creation date time of the log');
+            $table->dateTime('created_at')
+                ->useCurrent()
+                ->comment('Creation date time of the log');
 
             $table->foreign('person_id')
                 ->references('id')

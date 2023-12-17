@@ -19,5 +19,4 @@ final class LogbookData extends Data
     public ?float $longitude = null;
     public ?int $severity = null;
     public ?string $note = null;
-    public ?string $createdAt = null;
 }
