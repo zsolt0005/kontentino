@@ -93,7 +93,7 @@ final class SyncCommand extends Command
                 return;
             }
 
-            $planetsToInsert = array_map(fn(PlanetData $planet) => $this->mapPlanetResponse($planet), $planets->results);
+            $planetsToInsert = array_map(fn(PlanetData $planet) => $this->mapPlanetResponse($planet), $planets->results->items());
             $this->planetService->insertOrIgnoreAll($planetsToInsert);
 
             if($planets->next !== null)
@@ -138,7 +138,7 @@ final class SyncCommand extends Command
                 return;
             }
 
-            $peopleToInsert = array_map(fn(PersonData $person) => $this->mapPeopleResponse($person), $people->results);
+            $peopleToInsert = array_map(fn(PersonData $person) => $this->mapPeopleResponse($person), $people->results->items());
             $this->personService->insertOrIgnoreAll($peopleToInsert);
 
             if($people->next !== null)

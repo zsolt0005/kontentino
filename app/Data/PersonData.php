@@ -2,8 +2,8 @@
 
 namespace App\Data;
 
-use Spatie\DataTransferObject\Attributes\MapFrom;
-use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\LaravelData\Attributes\MapName;
+use Spatie\LaravelData\Data;
 
 /**
  * Represents person data.
@@ -12,7 +12,7 @@ use Spatie\DataTransferObject\DataTransferObject;
  * @author  Zsolt Döme
  * @since   2023
  */
-final class PersonData extends DataTransferObject
+final class PersonData extends Data
 {
 	public string $name;
 
@@ -20,27 +20,27 @@ final class PersonData extends DataTransferObject
 
 	public string $mass;
 
-    #[MapFrom('hair_color')]
+    #[MapName('hair_color')]
 	public string $hairColor;
 
-    #[MapFrom('skin_color')]
+    #[MapName('skin_color')]
 	public string $skinColor;
 
-    #[MapFrom('eye_color')]
+    #[MapName('eye_color')]
 	public string $eyeColor;
 
-    #[MapFrom('birth_year')]
+    #[MapName('birth_year')]
 	public string $birthYear;
 
 	public string $gender;
 
-    #[MapFrom('homeworld')]
+    #[MapName('homeworld')]
 	public string $homeWorldUrl;
 
-    #[MapFrom('created')]
+    #[MapName('created')]
 	public string $createdAt;
 
-    #[MapFrom('edited')]
+    #[MapName('edited')]
 	public string $editedAt;
 
 	public string $url;

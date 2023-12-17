@@ -2,9 +2,9 @@
 
 namespace App\Data;
 
-use App\Data\Casters\PersonDataCaster;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * This class represents the response data for the people API endpoint.
@@ -13,13 +13,20 @@ use Spatie\DataTransferObject\DataTransferObject;
  * @author  Zsolt Döme
  * @since   2023
  */
-final class PeopleResponseData extends DataTransferObject
+final class PeopleResponseData extends Data
 {
-	public ?string $next;
-
-	public ?string $previous;
-
-    /** @var array<PersonData> $results */
-    #[CastWith(PersonDataCaster::class)]
-	public array $results;
+    /**
+     * Constructor.
+     *
+     * @param string|null $next
+     * @param string|null $previous
+     * @param DataCollection<string, PersonData> $results
+     */
+    public function __construct(
+        public ?string $next,
+        public ?string $previous,
+        #[DataCollectionOf(PersonData::class)]
+        public DataCollection $results
+    )
+    {}
 }

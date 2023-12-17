@@ -2,8 +2,8 @@
 
 namespace App\Data;
 
-use Spatie\DataTransferObject\Attributes\MapFrom;
-use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\LaravelData\Attributes\MapName;
+use Spatie\LaravelData\Data;
 
 /**
  * Represents planet data.
@@ -12,14 +12,14 @@ use Spatie\DataTransferObject\DataTransferObject;
  * @author  Zsolt Döme
  * @since   2023
  */
-final class PlanetData extends DataTransferObject
+final class PlanetData extends Data
 {
 	public string $name;
 
-    #[MapFrom('rotation_period')]
+    #[MapName('rotation_period')]
 	public string $rotationPeriod;
 
-    #[MapFrom('orbital_period')]
+    #[MapName('orbital_period')]
 	public string $orbitalPeriod;
 
 	public string $diameter;
@@ -30,15 +30,15 @@ final class PlanetData extends DataTransferObject
 
 	public string $terrain;
 
-    #[MapFrom('surface_water')]
+    #[MapName('surface_water')]
 	public string $surfaceWater;
 
 	public string $population;
 
-    #[MapFrom('created')]
+    #[MapName('created')]
 	public string $createdAt;
 
-    #[MapFrom('edited')]
+    #[MapName('edited')]
 	public string $editedAt;
 
 	public string $url;

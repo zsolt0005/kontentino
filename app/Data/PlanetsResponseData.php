@@ -2,9 +2,9 @@
 
 namespace App\Data;
 
-use App\Data\Casters\PlanetDataCaster;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * This class represents the response data for the planets API endpoint.
@@ -13,13 +13,20 @@ use Spatie\DataTransferObject\DataTransferObject;
  * @author  Zsolt Döme
  * @since   2023
  */
-final class PlanetsResponseData extends DataTransferObject
+final class PlanetsResponseData extends Data
 {
-	public ?string $next;
-
-	public ?string $previous;
-
-    /** @var array<PlanetData> $results */
-    #[CastWith(PlanetDataCaster::class)]
-    public array $results;
+    /**
+     * Constructor.
+     *
+     * @param string|null $next
+     * @param string|null $previous
+     * @param DataCollection<string, PlanetData> $results
+     */
+    public function __construct(
+        public ?string $next,
+        public ?string $previous,
+        #[DataCollectionOf(PlanetData::class)]
+        public DataCollection $results
+    )
+    {}
 }

@@ -7,7 +7,7 @@ use App\Data\PlanetsResponseData;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use RuntimeException;
-use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\LaravelData\Contracts\BaseData;
 
 /**
  * This class provides methods to fetch Star Wars API (SWAPI) data.
@@ -53,7 +53,7 @@ final class SwapiService
     /**
      * Fetch data from the provided URL.
      *
-     * @template T of DataTransferObject
+     * @template T of BaseData
      *
      * @param string $url The URL to fetch data from.
      * @param class-string<T> $dtoClass
@@ -61,7 +61,7 @@ final class SwapiService
      * @throws GuzzleException If an error occurs while making the HTTP request.
      * @throws RuntimeException
      */
-    private function fetchData(string $url, string $dtoClass): DataTransferObject
+    private function fetchData(string $url, string $dtoClass): BaseData
     {
         $client = new Client();
 
@@ -71,6 +71,6 @@ final class SwapiService
         /** @var array<mixed> $parsedBody */
         $parsedBody = json_decode($body->getContents(), true);
 
-        return new $dtoClass($parsedBody);
+        return $dtoClass::from($parsedBody);
     }
 }
