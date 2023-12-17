@@ -18,8 +18,11 @@ final class Person extends Model
 {
     use HasFactory;
 
-    /** @inheritDoc  */
-    protected $table = 'people';
+    /** @var string The name of the table. */
+    public const TABLE = 'people';
+
+    /** @var string The name of the "id" column. */
+    public const ID = 'id';
 
     /** @var string The name of the "name" column. */
     public const NAME = 'name';
@@ -53,6 +56,9 @@ final class Person extends Model
 
     /** @var string The name of the "edited_at" column. */
     public const EDITED_AT = 'edited_at';
+
+    /** @inheritDoc  */
+    protected $table = self::TABLE;
 
     /** @inheritDoc  */
     protected $fillable = [

@@ -10,8 +10,10 @@ use App\Services\PersonService;
 use App\Services\PlanetService;
 use App\Services\SwapiService;
 use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
+use RuntimeException;
 
 /**
  * Command for synchronizing the list of all known {@see Planet}s and their {@see Person}s.
@@ -79,6 +81,11 @@ final class SyncCommand extends Command
                 $this->error('Something went wrong while retrieving planets for page ' . $page . '. HTTP Error code: ' . $e->getCode());
                 return;
             }
+            catch (RuntimeException $e)
+            {
+                $this->error('Something went wrong while parsing the retrieved data: ' . $e->getMessage());
+                return;
+            }
 
             if(!isset($planets->results))
             {
@@ -87,7 +94,7 @@ final class SyncCommand extends Command
             }
 
             $planetsToInsert = array_map(fn(PlanetData $planet) => $this->mapPlanetResponse($planet), $planets->results);
-            $this->planetService->insertAll($planetsToInsert);
+            $this->planetService->insertOrIgnoreAll($planetsToInsert);
 
             if($planets->next !== null)
             {
@@ -119,6 +126,11 @@ final class SyncCommand extends Command
                 $this->error('Something went wrong while retrieving people for page ' . $page . '. HTTP Error code: ' . $e->getCode());
                 return;
             }
+            catch (RuntimeException $e)
+            {
+                $this->error('Something went wrong while parsing the retrieved data: ' . $e->getMessage());
+                return;
+            }
 
             if(!isset($people->results))
             {
@@ -127,7 +139,7 @@ final class SyncCommand extends Command
             }
 
             $peopleToInsert = array_map(fn(PersonData $person) => $this->mapPeopleResponse($person), $people->results);
-            $this->personService->insertAll($peopleToInsert);
+            $this->personService->insertOrIgnoreAll($peopleToInsert);
 
             if($people->next !== null)
             {
@@ -145,6 +157,8 @@ final class SyncCommand extends Command
      *
      * @param PlanetData $planet The planet.
      * @return array<string, mixed> The mapped planet array with specific keys.
+     *
+     * @throws InvalidFormatException
      */
     private function mapPlanetResponse(PlanetData $planet): array
     {
@@ -168,6 +182,8 @@ final class SyncCommand extends Command
      *
      * @param PersonData $person The person.
      * @return array<string, mixed> The mapped person array with specific keys.
+     *
+     * @throws InvalidFormatException
      */
     private function mapPeopleResponse(PersonData $person): array
     {

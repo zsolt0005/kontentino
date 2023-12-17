@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Number;
+use InvalidArgumentException;
 
 /**
  * Class HomeService
@@ -44,6 +45,7 @@ final class HomeService
      * Prepares the grid data.
      *
      * @return GridData
+     * @throws InvalidArgumentException
      */
     public function prepareGridData(): GridData
     {
@@ -132,6 +134,7 @@ final class HomeService
      *
      * @param Builder<Planet> $planetsQueryBuilder
      * @return LengthAwarePaginator<Planet>
+     * @throws InvalidArgumentException
      */
     private function getPlanetsPagination(Builder $planetsQueryBuilder): LengthAwarePaginator
     {

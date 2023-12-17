@@ -6,3 +6,7 @@ parameters:
         - ../../app/
         - ../../database/
     level: 9
+    exceptions:
+          check:
+              tooWideThrowType: true
+              missingCheckedExceptionInThrows: true

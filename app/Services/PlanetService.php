@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Planet;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -49,9 +50,9 @@ final class PlanetService
      *
      * @return void
      */
-    public function insertAll(array $planets): void
+    public function insertOrIgnoreAll(array $planets): void
     {
-        Planet::insert($planets);
+        Planet::insertOrIgnore($planets);
     }
 
     /**

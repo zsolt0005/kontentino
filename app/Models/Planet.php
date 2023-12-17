@@ -16,11 +16,11 @@ final class Planet extends Model
 {
     use HasFactory;
 
-    /** @inheritDoc  */
-    protected $table = 'planets';
+    /** @var string The name of the table. */
+    public const TABLE = 'planets';
 
-    /** @inheritDoc  */
-    public $timestamps = false;
+    /** @var string The name of the "id" column. */
+    public const ID = 'id';
 
     /** @var string The name of the "name" column. */
     public const NAME = 'name';
@@ -56,6 +56,9 @@ final class Planet extends Model
     public const EDITED_AT = 'edited_at';
 
     /** @inheritDoc  */
+    protected $table = self::TABLE;
+
+    /** @inheritDoc  */
     protected $fillable = [
         self::NAME,
         self::ROTATION_PERIOD,
@@ -69,6 +72,9 @@ final class Planet extends Model
         self::CREATED_AT,
         self::EDITED_AT
     ];
+
+    /** @inheritDoc  */
+    public $timestamps = false;
 
     /**
      * Gets: the ID of the planet.

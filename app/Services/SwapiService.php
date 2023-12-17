@@ -6,6 +6,7 @@ use App\Data\PeopleResponseData;
 use App\Data\PlanetsResponseData;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use RuntimeException;
 use Spatie\DataTransferObject\DataTransferObject;
 
 /**
@@ -29,6 +30,7 @@ final class SwapiService
      * @param int $page The page number to fetch residents from.
      * @return PeopleResponseData
      * @throws GuzzleException If an error occurs while making the HTTP request.
+     * @throws RuntimeException
      */
     public function fetchPeopleByPage(int $page): PeopleResponseData
     {
@@ -41,6 +43,7 @@ final class SwapiService
      * @param int $page The page number to fetch planets from.
      * @return PlanetsResponseData
      * @throws GuzzleException If an error occurs while making the HTTP request.
+     * @throws RuntimeException
      */
     public function fetchPlanetsByPage(int $page): PlanetsResponseData
     {
@@ -56,6 +59,7 @@ final class SwapiService
      * @param class-string<T> $dtoClass
      * @return T The parsed array of data fetched from the URL.
      * @throws GuzzleException If an error occurs while making the HTTP request.
+     * @throws RuntimeException
      */
     private function fetchData(string $url, string $dtoClass): DataTransferObject
     {

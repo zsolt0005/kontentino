@@ -66,7 +66,7 @@ final class SyncPlanetsTest extends TestCase
             $planetServiceMock
         );
 
-        $planetServiceMock->expects('insertAll')->andReturnUsing(
+        $planetServiceMock->expects('insertOrIgnoreAll')->andReturnUsing(
             function (array $dataToInsert) use ($expectedGravity, $expectedClimate)
             {
                 self::assertSame($expectedGravity, $dataToInsert[0][Planet::GRAVITY]);

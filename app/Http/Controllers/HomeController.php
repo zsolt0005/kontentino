@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\HomeService;
 use Illuminate\View\View;
+use InvalidArgumentException;
 
 /**
  * Home page controller.
@@ -27,6 +28,8 @@ final class HomeController extends Controller
      * Returns the default view.
      *
      * @return View The default view.
+     *
+     * @throws InvalidArgumentException
      */
     public function default(): View
     {

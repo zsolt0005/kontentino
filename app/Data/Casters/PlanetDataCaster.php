@@ -20,7 +20,6 @@ final class PlanetDataCaster implements Caster
      *
      * @param array<array<string, mixed>> $value The value to be cast. It can be of any type.
      * @return array<PlanetData> An array of PlanetData objects.
-     * @throws UnknownProperties If the given value is not an array.
      */
     public function cast(mixed $value): array
     {

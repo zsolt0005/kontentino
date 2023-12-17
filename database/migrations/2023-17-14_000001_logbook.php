@@ -8,6 +8,9 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
+     * @throws RuntimeException
      */
     public function up(): void
     {
@@ -17,11 +20,12 @@ return new class extends Migration
             $table->unsignedBigInteger('person_id')->comment('Id of the person who created the log');
             $table->unsignedBigInteger('planet_id')->comment('Id of the planet where the log was created at');
 
-            $table->point('location')->comment('GPS Location where the log was created at');
+            $table->decimal('latitude', 8, 6)->comment('GPS Location: Latitude');
+            $table->decimal('longitude', 9, 6)->comment('GPS Location: Longitude');
             $table->unsignedTinyInteger('severity')->comment('Higher number = greater severity');
             $table->text('note')->comment('Encrypted note');
 
-            $table->date('created_at')->comment('Creation date time of the log');
+            $table->dateTime('created_at')->comment('Creation date time of the log');
 
             $table->foreign('person_id')
                 ->references('id')
@@ -37,6 +41,9 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
+     * @throws RuntimeException
      */
     public function down(): void
     {

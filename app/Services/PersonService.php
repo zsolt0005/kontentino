@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Person;
+use Illuminate\Database\UniqueConstraintViolationException;
 
 /**
  * Provides methods for retrieving and inserting {@see Person} data.
@@ -28,10 +29,11 @@ final class PersonService
      * Insert multiple people into the database.
      *
      * @param array<string, mixed> $people An array of People objects to insert into the database.
+     *
      * @return void
      */
-    public function insertAll(array $people): void
+    public function insertOrIgnoreAll(array $people): void
     {
-        Person::insert($people);
+        Person::insertOrIgnore($people);
     }
 }
