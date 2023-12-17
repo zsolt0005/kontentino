@@ -45,7 +45,7 @@ final class LogbookController extends Controller
         $this->validateNewLogbookData($logBook);
         $createdLogBookId = $this->createEntry($logBook);
 
-        return response()->json(['logBookId' => $createdLogBookId]);
+        return response()->json(['logBookId' => $createdLogBookId], 201);
     }
 
     /**

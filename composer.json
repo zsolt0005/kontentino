@@ -51,7 +51,7 @@
         ],
 
         "larastan": "vendor/bin/phpstan analyse -c tests/PhpStan/phpstan.neon",
-        "phpunit": "vendor/bin/phpunit tests/Unit --bootstrap tests/Unit/bootstrap.php"
+        "phpunit": "vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {
