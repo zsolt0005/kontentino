@@ -17,7 +17,7 @@ final class TypeUtils
     /**
      * Converts a value to int, if null, returns null.
      *
-     * @param mixed|null $input
+     * @param scalar|null $input
      *
      * @return int|null
      */

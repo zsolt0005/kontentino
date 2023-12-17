@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Clears url params that are empty.
@@ -14,9 +16,16 @@ use Illuminate\Http\Request;
  */
 final class StripEmptyParams
 {
-    public function handle(Request $request, Closure $next)
+    /**
+     * @param Request $request
+     * @param Closure $next
+     *
+     * @return RedirectResponse|Response
+     */
+    public function handle(Request $request, Closure $next): RedirectResponse|Response
     {
-        $query = $request->query();
+        /** @var scalar[] $query */
+        $query = $request->query() ?: [];
 
         $originalQueryCount = count($query);
         foreach ($query as $key => $value)

@@ -121,7 +121,7 @@ final class HomeService
     /**
      * Gets the pagination for the planets.
      *
-     * @param Builder $planetsQueryBuilder
+     * @param Builder<Planet> $planetsQueryBuilder
      * @return LengthAwarePaginator<Planet>
      */
     private function getPlanetsPagination(Builder $planetsQueryBuilder): LengthAwarePaginator
